@@ -4,6 +4,11 @@
     <hr />
     <getText :text="text" />
     <Counter :length="length" />
+    <ul>
+      <li v-for="name in filtering" :key="name.id">
+        <strong>{{ name.name }}</strong> - (id -{{ name.id }})
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -17,6 +22,14 @@ export default {
     return {
       text: "",
       length: 0,
+      names: [
+        { id: this.generateID(), name: "Денис" },
+        { id: this.generateID(), name: "Олег" },
+        { id: this.generateID(), name: "Татьяна" },
+        { id: this.generateID(), name: "Маргарита" },
+        { id: this.generateID(), name: "Света" },
+        { id: this.generateID(), name: "Дмитрий" },
+      ],
     };
   },
   components: { Input, getText, Counter },
@@ -24,6 +37,16 @@ export default {
     getData(text, length) {
       this.text = text;
       this.length = length;
+    },
+    generateID() {
+      return (Math.random() * 1000000).toFixed();
+    },
+  },
+  computed: {
+    filtering() {
+      return this.names.filter((item) =>
+        item.name.toLowerCase().includes(this.text.toLowerCase())
+      );
     },
   },
 };
@@ -37,5 +60,9 @@ export default {
   text-align: center;
   color: #2c3e50;
   margin-top: 60px;
+}
+
+ul {
+  list-style: none;
 }
 </style>
